@@ -1,0 +1,19 @@
+<?php
+
+class Regisztral_Controller
+{
+    public $baseName = 'regisztral';  //meghatározni, hogy melyik oldalon vagyunk
+    public function main(array $vars) // a router által továbbított paramétereket kapja
+    {
+        $regisztralModel = new Regisztral_Model;  //az osztályhoz tartozó modell
+
+        $retData = $regisztralModel->get_data($vars);
+        //betöltjük a nézetet
+        $view = new View_Loader($this->baseName."_main");
+        //átadjuk a lekérdezett adatokat a nézetnek
+        foreach($retData as $name => $value)
+            $view->assign($name, $value);
+    }
+}
+
+?>
