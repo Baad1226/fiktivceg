@@ -1,5 +1,3 @@
-<h2>
-    <br>A következő címen és telefonon érhet el:<br>
-    <br>Cím: ...<br>
-    <br>Telefon: ...<br>
-</h2>
+<h2>Elérhetőségek</h2>
+<p class="content">Cím: Fiktív cég fiktív címe<br>
+    Telefon: Fiktív cég fiktív telefonszáma</p>

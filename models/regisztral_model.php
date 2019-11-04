@@ -15,8 +15,7 @@ class Regisztral_Model
             switch(count($felhasznalo)) {
                 case 0:
                     // Ha nem létezik, akkor regisztráljuk
-                    $sql = "insert into felhasznalok values (0, :csaladi_nev, :utonev, :login, sha1(:jelszo), :jogosultsag)";
-                    //$sql = "insert into felhasznalok values (0, ".$vars['csaladi_nev'].", ".$vars['utonev'].", ".$vars['login'].", sha1(".$vars['password']."), '')";
+                    $sql = "insert into felhasznalok values (:csaladi_nev, :utonev, :login, sha1(:jelszo), :jogosultsag)";
                     $stmt = $connection->prepare($sql);
                     if($stmt->execute(Array(':csaladi_nev' => $vars['csaladi_nev'], ':utonev' => $vars['utonev'],
                         ':login' => $vars['login'], ':jelszo' => $vars['password'], ':jogosultsag' => '_1_'))) {

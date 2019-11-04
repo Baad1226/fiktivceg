@@ -1,13 +1,18 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.8.3
+-- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2018. Már 05. 23:47
--- Kiszolgáló verziója: 10.1.19-MariaDB
--- PHP verzió: 7.0.13
+-- Létrehozás ideje: 2019. Nov 04. 20:20
+-- Kiszolgáló verziója: 10.1.35-MariaDB
+-- PHP verzió: 7.2.9
+
+CREATE DATABASE IF NOT EXISTS fiktivceg DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE fiktivceg;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,10 +22,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Adatbázis: `web2`
+-- Adatbázis: `fiktivceg`
 --
-CREATE DATABASE IF NOT EXISTS `fiktivceg` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `fiktivceg`;
 
 -- --------------------------------------------------------
 
@@ -29,30 +32,46 @@ USE `fiktivceg`;
 --
 
 CREATE TABLE IF NOT EXISTS `felhasznalok` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `csaladi_nev` varchar(45) NOT NULL DEFAULT '',
   `utonev` varchar(45) NOT NULL DEFAULT '',
   `bejelentkezes` varchar(12) NOT NULL DEFAULT '',
   `jelszo` varchar(40) NOT NULL DEFAULT '',
   `jogosultsag` varchar(3) NOT NULL DEFAULT '_1_',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`bejelentkezes`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `felhasznalok`
 --
 
-INSERT INTO `felhasznalok` (`id`, `csaladi_nev`, `utonev`, `bejelentkezes`, `jelszo`, `jogosultsag`) VALUES
-(1, 'Rendszer', 'Admin', 'Admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', '__1'),
-(2, 'Családi_2', 'Utónév_2', 'Login2', '6cf8efacae19431476020c1e2ebd2d8acca8f5c0', '_1_'),
-(3, 'Családi_3', 'Utónév_3', 'Login3', 'df4d8ad070f0d1585e172a2150038df5cc6c891a', '_1_'),
-(4, 'Családi_4', 'Utónév_4', 'Login4', 'b020c308c155d6bbd7eb7d27bd30c0573acbba5b', '_1_'),
-(5, 'Családi_5', 'Utónév_5', 'Login5', '9ab1a4743b30b5e9c037e6a645f0cfee80fb41d4', '_1_'),
-(6, 'Családi_6', 'Utónév_6', 'Login6', '7ca01f28594b1a06239b1d96fc716477d198470b', '_1_'),
-(7, 'Családi_7', 'Utónév_7', 'Login7', '41ad7e5406d8f1af2deef2ade4753009976328f8', '_1_'),
-(8, 'Családi_8', 'Utónév_8', 'Login8', '3a340fe3599746234ef89591e372d4dd8b590053', '_1_'),
-(9, 'Családi_9', 'Utónév_9', 'Login9', 'c0298f7d314ecbc5651da5679a0a240833a88238', '_1_'),
-(10, 'Családi_10', 'Utónév_10', 'Login10', 'a477427c183664b57f977661ac3167b64823f366', '_1_');
+INSERT INTO `felhasznalok` (`csaladi_nev`, `utonev`, `bejelentkezes`, `jelszo`, `jogosultsag`) VALUES
+('Rendszer', 'Admin', 'Admin', 'D033E22AE348AEB5660FC2140AEC35850C4DA997', '__1'),
+('Bacsa', 'Adam', 'Baad1226', 'cb662e69f9f0781d2fdb6352d516c2c19d183069', '_1_');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `hirek`
+--
+
+CREATE TABLE IF NOT EXISTS `hirek` (
+  `hirek_id` int(11) NOT NULL,
+  `cim` varchar(30) NOT NULL,
+  `hirek` varchar(4000) NOT NULL,
+  `bejelentkezes` varchar(12) NOT NULL DEFAULT '',
+  `letrehozas_ideje` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`bejelentkezes`) REFERENCES felhasznalok(`bejelentkezes`),
+  PRIMARY KEY (`hirek_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- A tábla adatainak kiíratása `hirek`
+--
+
+INSERT INTO `hirek` (`hirek_id`, `cim`, `hirek`, `bejelentkezes`, `letrehozas_ideje`) VALUES
+(1, 'Teszt', 'Teszt', 'Baad1226', '2019-11-03 18:38:50'),
+(2, 'Tesztelem', 'Itt egy teszt szöveg', 'Admin', '2019-11-03 20:40:49'),
+(3, 'Ez', 'Az', 'Admin', '2019-11-04 18:14:41');
 
 -- --------------------------------------------------------
 
@@ -74,14 +93,16 @@ CREATE TABLE IF NOT EXISTS `menu` (
 --
 
 INSERT INTO `menu` (`url`, `nev`, `szulo`, `jogosultsag`, `sorrend`) VALUES
-('admin', 'Admin', '', '001', 80),
-('alapinfok', 'Alapinfók', 'elerhetoseg', '111', 40),
-('belepes', 'Belépés', '', '100', 60),
-('elerhetoseg', 'Elérhetőség', '', '111', 20),
-('kiegeszitesek', 'Kiegészítések', 'elerhetoseg', '011', 50),
+('admin', 'Admin', '', '001', 51),
+('alapinfok', 'Alapinfók', 'elerhetoseg', '111', 41),
+('belepes', 'Belépés', '', '100', 50),
+('elerhetoseg', 'Elérhetőség', '', '111', 40),
+('hirek', 'Hírek', '', '011', 20),
+('kezdolap', 'Kezdőlap', '', '111', 10),
+('kiegeszitesek', 'Kiegészítések', 'elerhetoseg', '011', 42),
 ('kilepes', 'Kilépés', '', '011', 70),
-('linkek', 'Linkek', '', '100', 30),
-('nyitolap', 'Nyitólap', '', '111', 10);
+('regisztracio', 'Regisztráció', '', '100', 60),
+('uj_hir_iras', 'Új hír írás', 'hirek', '011', 21);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

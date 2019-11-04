@@ -6,6 +6,7 @@ class View_Loader
     private $render = FALSE;
     private $selectedItems = FALSE;
     private $style = FALSE;
+    private $javascript = FALSE;
 
     public function __construct($viewName)
     {
@@ -20,6 +21,11 @@ class View_Loader
         {
             $this->style = SITE_ROOT . 'css/' . strtolower($viewName) . '.css';;
         }
+        $file = SERVER_ROOT . 'js/' . strtolower($viewName) . '.js';
+        if (file_exists($file))
+        {
+            $this->javascript = SITE_ROOT . 'js/' . strtolower($viewName) . '.js';;
+        }
     }
 
     public function assign($variable , $value)
@@ -32,6 +38,7 @@ class View_Loader
         $this->data['render'] = $this->render;
         $this->data['selectedItems'] = $this->selectedItems;
         $this->data['style'] = $this->style;
+        $this->data['javascript'] = $this->javascript;
         $viewData = $this->data;
         include(SERVER_ROOT . 'views/page_main.php');
     }

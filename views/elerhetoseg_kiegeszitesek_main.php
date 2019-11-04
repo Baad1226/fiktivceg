@@ -1,5 +1,2 @@
-<h2>
-    <br>Kiegészítések:<br>
-    <br>Kiegészítés 1<br>
-    <br>Kiegészítés 2<br>
-</h2>
+<h2>Kiegészítések</h2>
+<p class="content">A fiktív cégről kiegészítések</p>

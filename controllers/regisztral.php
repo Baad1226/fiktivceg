@@ -8,6 +8,8 @@ class Regisztral_Controller
         $regisztralModel = new Regisztral_Model;  //az osztályhoz tartozó modell
 
         $retData = $regisztralModel->get_data($vars);
+        if($retData['eredmeny'] == "ERROR")
+            $this->baseName = "regisztracio";
         //betöltjük a nézetet
         $view = new View_Loader($this->baseName."_main");
         //átadjuk a lekérdezett adatokat a nézetnek
